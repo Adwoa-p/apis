@@ -1,0 +1,61 @@
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import Library
+from .serializers import Library_Serializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+# we create our endpoints here. These are for accessing data
+'''
+Serializers are classes that allow complex data types,
+such as Django querysets and model instances, 
+to be converted into native Python data types,
+which can then be easily rendered into JSON, XML, or other content types for APIs.
+'''
+
+
+@api_view(['GET', 'POST']) # this decorator describes how the function should work
+def book_list(request):
+    # get book list, serialize them and return json file
+    if request.method == 'GET':
+        books = Library.objects.all()
+        serializer = Library_Serializer(books, many = True)
+        return Response(serializer.data)
+    if request.method == 'POST':
+        serializer = Library_Serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        else:
+        # Return errors if the serializer data is invalid
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET','PUT', 'DELETE'])     
+def book_details(request,id):
+
+    try:
+        book = Library.objects.get(pk=id)
+    except Library.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+    if request.method == 'GET':
+        serializer = Library_Serializer(book)
+        return Response(serializer.data)
+    
+    elif request.method == 'PUT':
+        serializer = Library_Serializer(book, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    elif request.method == 'DELETE':
+        book.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+        
+
