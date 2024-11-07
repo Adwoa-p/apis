@@ -1,10 +1,10 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-from .models import Library
-from .serializers import Library_Serializer
+from .models import *
+from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, filters, generics
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 # we create our endpoints here. These are for accessing data
 '''
@@ -57,5 +57,23 @@ def book_details(request,id):
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-        
+# @api_view(['GET'])
+# def get_book(request):
+#     if request.method== 'GET':
+#         # books = Library.objects.all()
+#         author = request.GET.get('book_author')
+#         if author is not None:
+#                 books = books.filter(book_author__iexact=author)
+#         serializer = Library_Serializer(books, many=True)
+#         return Response(serializer.data,  status = status.HTTP_200_OK )
+
+
+# filter_backends = [DjangoFilterBackend]
+# filterset_fields = ['book_author', 'book_title']
+
+class BookListView(generics.ListAPIView):
+    queryset = Library.objects.all()
+    serializer_class = Library_Serializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['book_author', 'book_title']
 
