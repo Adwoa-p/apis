@@ -2,7 +2,9 @@ from .models import *
 from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status, filters, generics
+from rest_framework import status, generics
+from rest_framework.viewsets import ModelViewSet
+from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -57,23 +59,15 @@ def book_details(request,id):
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# @api_view(['GET'])
-# def get_book(request):
-#     if request.method== 'GET':
-#         # books = Library.objects.all()
-#         author = request.GET.get('book_author')
-#         if author is not None:
-#                 books = books.filter(book_author__iexact=author)
-#         serializer = Library_Serializer(books, many=True)
-#         return Response(serializer.data,  status = status.HTTP_200_OK )
-
-
-# filter_backends = [DjangoFilterBackend]
-# filterset_fields = ['book_author', 'book_title']
-
-class BookListView(generics.ListAPIView):
+class BookViewSet(ModelViewSet):
     queryset = Library.objects.all()
     serializer_class = Library_Serializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['book_author', 'book_title']
+    search_fields = [ 'book_title', 'book_author', 'book_summary']
+
+
+
+
+
+
 
