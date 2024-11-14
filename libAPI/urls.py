@@ -25,6 +25,7 @@ router.register(r'books', BookViewSet, basename='books')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('',health_check, name="health-check"),
     path('books/', book_list, name= 'book_list'),
     path('books/<int:id>', book_details),
     path('books/', BookViewSet.as_view({'get': 'list'}), name='book_list'),

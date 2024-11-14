@@ -54,7 +54,6 @@ def book_details(request,id):
         else: 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     elif request.method == 'DELETE':
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -64,6 +63,10 @@ class BookViewSet(ModelViewSet):
     serializer_class = Library_Serializer
     filter_backends = [filters.SearchFilter]
     search_fields = [ 'book_title', 'book_author', 'book_summary']
+
+def health_check():
+    return Response("status: OK")
+
 
 
 
