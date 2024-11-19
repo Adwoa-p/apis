@@ -25,18 +25,18 @@ class BooksViewset(ModelViewSet):
     pagination_class = BookListPagination
 
 
-@api_view(['POST']) # this decorator describes how the function should work
-def book_list(request):
-    # get book list, serialize them and return json file
+# @api_view(['POST']) # this decorator describes how the function should work
+# def book_list(request):
+#     # get book list, serialize them and return json file
 
-    if request.method == 'POST':
-        serializer = Library_Serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATED)
-        else:
-        # Return errors if the serializer data is invalid
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     if request.method == 'POST':
+#         serializer = Library_Serializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status = status.HTTP_201_CREATED)
+#         else:
+#         # Return errors if the serializer data is invalid
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','PUT', 'DELETE'])     
 def book_details(request,id):
@@ -67,10 +67,24 @@ class BookViewSet(ModelViewSet):
     queryset = Library.objects.all()
     serializer_class = Library_Serializer
     filter_backends = [filters.SearchFilter]
+    pagination_class = BookListPagination
     search_fields = [ 'book_title', 'book_author', 'book_summary']
 
 
+# class UserViewSet(ModelViewSet):
+#     """
+#     A simple ViewSet for listing or retrieving users.
+#     """
+#     def list(self, request):
+#         queryset = Library.objects.all()
+#         serializer = Library_Serializer(queryset, many=True)
+#         return Response(serializer.data)
 
+#     def retrieve(self, request, pk=None):
+#         queryset = Library.objects.all()
+#         book = Library.objects.get(queryset, pk=id)
+#         serializer = Library_Serializer(book)
+#         return Response(serializer.data)
 
 
 
