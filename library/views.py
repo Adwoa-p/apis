@@ -71,20 +71,7 @@ class BookViewSet(ModelViewSet):
     search_fields = [ 'book_title', 'book_author', 'book_summary']
 
 
-# class UserViewSet(ModelViewSet):
-#     """
-#     A simple ViewSet for listing or retrieving users.
-#     """
-#     def list(self, request):
-#         queryset = Library.objects.all()
-#         serializer = Library_Serializer(queryset, many=True)
-#         return Response(serializer.data)
 
-#     def retrieve(self, request, pk=None):
-#         queryset = Library.objects.all()
-#         book = Library.objects.get(queryset, pk=id)
-#         serializer = Library_Serializer(book)
-#         return Response(serializer.data)
 
 
 
