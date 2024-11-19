@@ -6,4 +6,4 @@ from .models import *
 class Library_Serializer(serializers.ModelSerializer):
     class Meta: 
         model = Library
-        fields = ['book_id','book_title', 'book_author', 'book_summary']
+        fields = ['book_id','book_title', 'book_author', 'book_summary','created']

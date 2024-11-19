@@ -5,6 +5,7 @@ class Library(models.Model):
     book_title = models.CharField(max_length=225)
     book_author = models.CharField(max_length=225)
     book_summary = models.TextField(max_length=325)
+    created = models.DateTimeField(auto_now_add=True)
     
 
     def __str__(self):

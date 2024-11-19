@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-%^)$m%g$dm^dr!_qbtw*!!#1fv2s1@ks!%d+((0@wa*8d64va=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['api-1-f6uj.onrender.com',]
+ALLOWED_HOSTS = ['api-1-f6uj.onrender.com',
+                 '127.0.0.1',
+                 ]
 
 
 # Application definition
@@ -57,6 +59,9 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
     ],
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    #  'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
+    # 'PAGE_SIZE': 2,
 }
 
 ROOT_URLCONF = 'libAPI.urls'

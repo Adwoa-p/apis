@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from .models import *
 from .serializers import *
 from rest_framework.decorators import api_view
@@ -6,6 +7,7 @@ from rest_framework import status, generics
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+from library.pagination import *
 
 
 # we create our endpoints here. These are for accessing data
@@ -17,13 +19,16 @@ which can then be easily rendered into JSON, XML, or other content types for API
 '''
 
 
-@api_view(['GET', 'POST']) # this decorator describes how the function should work
+class BooksViewset(ModelViewSet):
+    queryset = Library.objects.all()
+    serializer_class = Library_Serializer
+    pagination_class = BookListPagination
+
+
+@api_view(['POST']) # this decorator describes how the function should work
 def book_list(request):
     # get book list, serialize them and return json file
-    if request.method == 'GET':
-        books = Library.objects.all()
-        serializer = Library_Serializer(books, many = True)
-        return Response(serializer.data, status = status.HTTP_200_OK )
+
     if request.method == 'POST':
         serializer = Library_Serializer(data=request.data)
         if serializer.is_valid():
@@ -64,8 +69,6 @@ class BookViewSet(ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = [ 'book_title', 'book_author', 'book_summary']
 
-def health_check():
-    return Response("status: OK")
 
 
 
