@@ -21,14 +21,13 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'books', BookViewSet, basename='books')
+# router.register(r'user', UserViewSet, basename='users')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('books/', BooksViewset.as_view({'get':'list'}), name= 'allbooks'),
     # path('books/', book_list, name= 'book_list'),
     path('books/<int:id>', book_details),
     path('books/', BookViewSet.as_view({'get': 'list'}), name='book_list'),
-    
-
-]
+    #  path('user/',UserViewSet.as_view({'get': 'list'}),name='user_create'),
+] + router.urls

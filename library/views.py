@@ -8,6 +8,10 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from library.pagination import *
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 
 
 # we create our endpoints here. These are for accessing data
@@ -18,11 +22,6 @@ to be converted into native Python data types,
 which can then be easily rendered into JSON, XML, or other content types for APIs.
 '''
 
-
-class BooksViewset(ModelViewSet):
-    queryset = Library.objects.all()
-    serializer_class = Library_Serializer
-    pagination_class = BookListPagination
 
 
 # @api_view(['POST']) # this decorator describes how the function should work
@@ -42,8 +41,8 @@ class BooksViewset(ModelViewSet):
 def book_details(request,id):
 
     try:
-        book = Library.objects.get(pk=id)
-    except Library.DoesNotExist:
+        book = Book.objects.get(pk=id)
+    except Book.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
@@ -64,16 +63,27 @@ def book_details(request,id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class BookViewSet(ModelViewSet):
-    queryset = Library.objects.all()
+    queryset = Book.objects.all()
     serializer_class = Library_Serializer
     filter_backends = [filters.SearchFilter]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     pagination_class = BookListPagination
-    search_fields = [ 'book_title', 'book_author', 'book_summary']
+    search_fields = [ 'book_title', 'book_author', 'book_summary', 'genre']
 
 
+# class UserViewSet(ModelViewSet):
+#     queryset = Book.objects.all()
+#     serializer_class = User_Serializer
+#     # authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
 
-
-
+    # def get(self, request, format=None):
+    #     content = {
+    #         'user': str(request.user),  # `django.contrib.auth.User` instance.
+    #         'auth': str(request.auth),  # None
+    #     }
+    #     return Response(content)
 
 
 
