@@ -72,19 +72,6 @@ class BookViewSet(ModelViewSet):
     search_fields = [ 'book_title', 'book_author', 'book_summary', 'genre']
 
 
-# class UserViewSet(ModelViewSet):
-#     queryset = Book.objects.all()
-#     serializer_class = User_Serializer
-#     # authentication_classes = [SessionAuthentication, BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
-
-    # def get(self, request, format=None):
-    #     content = {
-    #         'user': str(request.user),  # `django.contrib.auth.User` instance.
-    #         'auth': str(request.auth),  # None
-    #     }
-    #     return Response(content)
-
 
 
 
