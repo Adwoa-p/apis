@@ -60,7 +60,7 @@
 
 ### **Test Token**
 - **Method**: GET
-- **URL**: `BASE_URL/test-token/`
+- **URL**: `BASE_URL/test_token/`
 - **Headers**:
 ```json
 {
@@ -80,7 +80,7 @@
 
 ### **Retrieve User Details**
 - **Method**: GET
-- **URL**: `BASE_URL/users/token`
+- **URL**: `BASE_URL/user`
 - **Authentication**: Required
 - **Headers**:
 ```json
@@ -91,6 +91,7 @@
 - **Response**:
 ```json
 {
+    "user_id": 1,
     "first_name": "Maame",
     "last_name": "Naa",
     "username": "maame",
@@ -103,7 +104,7 @@
 
 ### **Edit User Details**
 - **Method**: POST
-- **URL**: `BASE_URL/users/token/`
+- **URL**: `BASE_URL/user`
 - **Authentication**: Required
 - **Headers**:
 ```json
@@ -121,7 +122,7 @@
     "first_name": "Maame",
     "last_name": "Naa",
     "username": "maame",
-    "email": "maame@example.com",
+    "email": "maame.naa@example.com",
     "password": "123password",
     "phone_number": "27783674",
     "date_joined": "2024-12-01T14:23:00Z"
