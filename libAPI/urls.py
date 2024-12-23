@@ -23,16 +23,13 @@ from user import views
 
 
 router = DefaultRouter()
-router.register(r'books', BookViewSet, basename='books')
-# router.register(r'user', UserViewSet, basename='users')
+router.register(r'books', BookViewSet, basename='books') 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    # path('books/', book_list, name= 'book_list'),
     path('books/<int:id>', book_details),
     path('books/', BookViewSet.as_view({'get': 'list'}), name='book_list'),
-    #  path('user/',UserViewSet.as_view({'get': 'list'}),name='user_create'),
     re_path('signup/', views.signup),
     re_path('login/', views.login),
     re_path('test_token/', views.test_token),
