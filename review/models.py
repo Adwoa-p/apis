@@ -1,6 +1,6 @@
 from django.db import models
-from user.models import User
-from library.models import Book
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # Create your models here.
 
@@ -11,9 +11,9 @@ class Review(models.Model):
 
     review_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    book_id = models.ForeignKey(Book, on_delete=models.CASCADE)
+    book_id = models.ForeignKey('library.Book', on_delete=models.CASCADE)
     review_text = models.TextField(max_length=450)
-    is_public = models.CharField(
+    visibilty = models.CharField(
         max_length=7, 
         choices=PrivacyChoices.choices,
         default=PrivacyChoices.public

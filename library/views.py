@@ -66,8 +66,8 @@ class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = Library_Serializer
     filter_backends = [filters.SearchFilter]
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
     pagination_class = BookListPagination
     search_fields = [ 'book_title', 'book_author', 'book_summary', 'genre']
 

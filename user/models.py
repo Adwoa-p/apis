@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
-from .manager import UserManager
+from .manager import UserManager                                                               
 # Create your models here.
 
 class User(AbstractBaseUser):
@@ -9,17 +9,17 @@ class User(AbstractBaseUser):
     first_name= models.CharField(max_length=100, verbose_name=_("First Name"))
     last_name= models.CharField(max_length=100, verbose_name=_("Last Name"))
     phone_number = models.CharField(max_length=60, unique=True)
-
-    username = models.CharField(max_length=60, unique=True) # Required
-    is_active = models.BooleanField(default=True) # Required - user can login
-    is_staff = models.BooleanField(default=False) # Required
-    is_superuser = models.BooleanField(default=False) # Required
-    is_admin = models.IntegerField(default=0) # Required
-    date_joined = models.DateTimeField(auto_now_add= True) # Required
+    
+    user_id=models.AutoField(primary_key=True)
+    username = models.CharField(max_length=60, unique=True) 
+    is_active = models.BooleanField(default=True) 
+    is_staff = models.BooleanField(default=False) 
+    is_superuser = models.BooleanField(default=False) 
+    date_joined = models.DateTimeField(auto_now_add= True) 
 
     USERNAME_FIELD='email'
 
-    REQUIRED_FIELDS=['username', 'firstname', 'lastname', 'phone_number']  
+    REQUIRED_FIELDS=['username', 'first_name', 'last_name', 'phone_number']  
 
     EMAIL_FIELD = 'email' 
 
@@ -31,4 +31,18 @@ class User(AbstractBaseUser):
     @property
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
+    
+    def has_perm(self, perm, obj=None):
+        """Check if the user has a specific permission."""
+        # For now, we assume all permissions are granted to superusers
+        if self.is_superuser:
+            return True
+        return False
+
+    def has_module_perms(self, app_label):
+        """Check if the user has permissions for the given app."""
+        # For now, we assume all permissions are granted to superusers
+        if self.is_superuser:
+            return True
+        return False
         

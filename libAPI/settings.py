@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'user',
     'review',
     'django_filters',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +62,16 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
     ],
+   
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+
     # 'DEFAULT_AUTHENTICATION_CLASSES': [
     #     'rest_framework.authentication.BasicAuthentication',
     #     'rest_framework.authentication.SessionAuthentication',
@@ -145,3 +156,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# AUTH_USER_MODEL = 'user.CustomUser'
+AUTH_USER_MODEL = 'user.User'
+
+
+
