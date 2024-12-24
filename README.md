@@ -136,6 +136,9 @@ Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 **Description:** Allows authenticated users to update their profile details.
 
 #### Sample Request
+```http
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
+```
 ```json
 {
     "first_name": "Maame",
@@ -270,7 +273,7 @@ GET http://127.0.0.1:8000/books/1/reviews/2/
 
 ## **USER ENDPOINTS**
 
-### **Retrieve All Reviews**
+### **Retrieve All User Reviews**
 
 **Method:** GET  
 **URL:** `BASE URL/user/reviews/` </br>
@@ -278,6 +281,9 @@ GET http://127.0.0.1:8000/books/1/reviews/2/
 **Description:** Allows users to get all reviews they’ve ever posted.
 
 #### Sample Request
+```http
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
+```
 ```http
 GET http://127.0.0.1:8000/user/reviews/
 ```
@@ -308,6 +314,9 @@ GET http://127.0.0.1:8000/user/reviews/
 **Description:** Allows users to add a review to a book.
 
 #### Sample Request
+```http
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
+```
 ```json
 {
  "review_text": "Nulla consequat massa quis enim.",
@@ -335,6 +344,9 @@ GET http://127.0.0.1:8000/user/reviews/
 **Description:** Allows users to edit their visibility detail.
 
 #### Sample Request
+```http
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
+```
 ```json
 {
  "review_text": "Nulla consequat massa quis enim.",
@@ -362,6 +374,9 @@ GET http://127.0.0.1:8000/user/reviews/
 **Description:** Allows users to edit the details of a particular review posted.
 
 #### Sample Request
+```http
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
+```
 ```json
 {
  "review_text": "Nulla massa quis enim.",
@@ -390,6 +405,9 @@ GET http://127.0.0.1:8000/user/reviews/
 
 #### Sample Request
 ```http
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
+```
+```http
 DELETE http://127.0.0.1:8000/user/reviews/3/
 ```
 
@@ -412,6 +430,9 @@ DELETE http://127.0.0.1:8000/user/reviews/3/
 **Description:** Allows admin to add a book
 
 #### Sample Request
+```http
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
+```
 ```json
 {
  "book_title": "Lion of Judah",
@@ -443,6 +464,9 @@ DELETE http://127.0.0.1:8000/user/reviews/3/
 **Description:** Allows admin to update the details of a book.
 
 #### Sample Request
+```http
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
+```
 ```json
 {
  "book_title": "Lion of Judah",
@@ -476,6 +500,9 @@ DELETE http://127.0.0.1:8000/user/reviews/3/
 
 #### Sample Request
 ```http
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
+```
+```http
 DELETE http://127.0.0.1:8000/books/2/
 ```
 
@@ -494,6 +521,9 @@ DELETE http://127.0.0.1:8000/books/2/
 **Description:** Allows admin to delte a book's review by permanently making it private
 
 #### Sample Request
+```http
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
+```
 ```http
 DELETE	 http://127.0.0.1:8000/books/1/reviews/1/
 ```
