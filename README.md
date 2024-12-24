@@ -330,7 +330,7 @@ GET http://127.0.0.1:8000/user/reviews/
 ### **Update Review Visibility**
 
 **Method:** PATCH  
-**URL:** `BASE_URL/user/reviews/{id}/public/` and `BASE_URL/user/reviews/{id}/public/` </br>
+**URL:** `BASE_URL/user/reviews/{id}/public/` and `BASE_URL/user/reviews/{id}/private/` </br>
 **Authentication:** True  </br>
 **Description:** Allows users to edit their visibility detail.
 
