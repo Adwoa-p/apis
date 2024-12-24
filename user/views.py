@@ -31,7 +31,6 @@ def login(request):
     if not user.check_password(request.data['password']):
         return Response({"detail":"Not found."}, status = status.HTTP_404_NOT_FOUND)
     token, created  = Token.objects.get_or_create(user=user)
-    serializer = UserSerializer(instance=user)
     return Response({"token": token.key,"message": " User login successful."})
 
 
@@ -43,3 +42,17 @@ def test_token(request):
     return Response("passed for {}".format(request.user.email)) # the req passed for the email of the user whose token we just provided
 
 
+@api_view(['GET', 'PUT'])
+@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+def user(request):
+    if request.method == 'GET':
+        serializer = UserSerializer(request.user)
+        return Response({'user': serializer.data})
+    elif request.method =='PUT':
+        serializer = UserSerializer(data= request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'user':serializer.data})
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
