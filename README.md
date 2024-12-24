@@ -43,6 +43,9 @@
 **Description:** Allows new users to register.
 
 #### Sample Request
+```http
+   POST http://127.0.0.1:8000/signup/
+```
 ```json
 {
     "first_name": "Maame",
@@ -63,11 +66,14 @@
 
 ### **Signin**
 **Method:** POST  
-**URL:** `BASE_URL/signin/`  
+**URL:** `BASE_URL/login/`  
 **Authentication:** False  
 **Description:** Allows existing users to log in.
 
 #### Sample Request
+```http
+    POST http://127.0.0.1:8000/login/
+```
 ```json
 {
     "username": "maame",
@@ -91,6 +97,7 @@
 
 #### Sample Request
 ```http
+GET http://127.0.0.1:8000/test_token/
 Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 
@@ -113,6 +120,7 @@ Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 
 #### Sample Request
 ```http
+GET http://127.0.0.1:8000/user/
 Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 
@@ -137,6 +145,7 @@ Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 
 #### Sample Request
 ```http
+PUT http://127.0.0.1:8000/user/
 Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 ```json
@@ -282,10 +291,8 @@ GET http://127.0.0.1:8000/books/1/reviews/2/
 
 #### Sample Request
 ```http
-Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
-```
-```http
 GET http://127.0.0.1:8000/user/reviews/
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 
 #### Sample Response
@@ -315,6 +322,7 @@ GET http://127.0.0.1:8000/user/reviews/
 
 #### Sample Request
 ```http
+POST http://127.0.0.1:8000/user/reviews/
 Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 ```json
@@ -345,6 +353,7 @@ Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 
 #### Sample Request
 ```http
+PATCH http://127.0.0.1:8000/user/reviews/3/public/
 Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 ```json
@@ -375,6 +384,7 @@ Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 
 #### Sample Request
 ```http
+POST http://127.0.0.1:8000/user/reviews/3/
 Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 ```json
@@ -405,10 +415,8 @@ Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 
 #### Sample Request
 ```http
-Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
-```
-```http
 DELETE http://127.0.0.1:8000/user/reviews/3/
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 
 #### Sample Response
@@ -431,6 +439,7 @@ DELETE http://127.0.0.1:8000/user/reviews/3/
 
 #### Sample Request
 ```http
+POST http://127.0.0.1:8000/books/
 Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 ```json
@@ -465,6 +474,7 @@ Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 
 #### Sample Request
 ```http
+POST http://127.0.0.1:8000/books/2/
 Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 ```json
@@ -500,10 +510,8 @@ Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 
 #### Sample Request
 ```http
-Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
-```
-```http
 DELETE http://127.0.0.1:8000/books/2/
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 
 #### Sample Response
@@ -522,10 +530,8 @@ DELETE http://127.0.0.1:8000/books/2/
 
 #### Sample Request
 ```http
-Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
-```
-```http
 DELETE	 http://127.0.0.1:8000/books/1/reviews/1/
+Authorization: Bearer fbf32dc0321d15f8509eaa99c33afe26abb00e17
 ```
 
 #### Sample Response
