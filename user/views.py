@@ -49,8 +49,10 @@ def user(request):
     if request.method == 'GET':
         serializer = UserSerializer(request.user)
         return Response({'user': serializer.data})
+    
     elif request.method =='PUT':
-        serializer = UserSerializer(data= request.data)
+        user = get_object_or_404(User, username=request.data.get('username'))
+        serializer = UserSerializer(user, data= request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'user':serializer.data})
