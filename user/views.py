@@ -4,12 +4,13 @@ from .serializers import UserSerializer
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 User = get_user_model()
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication # To authenticate sessions with a token
 from rest_framework.permissions import IsAuthenticated # to declare that an api only works if user is authenticated
+from django.shortcuts import redirect 
 # from knox.models import AuthToken
 
 
@@ -17,9 +18,9 @@ from rest_framework.permissions import IsAuthenticated # to declare that an api 
 def signup(request):
     serializer = UserSerializer(data= request.data)
     if serializer.is_valid():
-        serializer.save()
-        user = User.objects.get(username=request.data['username'])
-        user.set_password(request.data['password']) # password is unique so the hashed version of it is stored
+        user = User(username=serializer.validated_data['username'],email=serializer.validated_data.get('email'),
+                phone_number=serializer.validated_data['phone_number'])
+        user.set_password(serializer.validated_data['password']) # password is unique so the hashed version of it is stored
         user.save()
         token = Token.objects.create(user=user) # token for user because they just signed up
         return Response({"message": "User registration successful."})
@@ -27,9 +28,18 @@ def signup(request):
 
 @api_view(['POST'])
 def login(request):
-    user = get_object_or_404(User, username=request.data['username'])
-    if not user.check_password(request.data['password']):
-        return Response({"detail":"Not found."}, status = status.HTTP_404_NOT_FOUND)
+    username=request.data['username']
+    password = request.data['password']
+
+    print(f"Attempting to authenticate: username={username}, password={password}")
+
+    user = authenticate(username=username, password=password)
+
+    if user is None:
+        print("Authentication failed")
+        return Response({"detail":"Invalid Credentials"}, status = status.HTTP_401_UNAUTHORIZED)
+    
+    print(f"Authenticated user: {user.username}")
     token, created  = Token.objects.get_or_create(user=user)
     return Response({"token": token.key,"message": " User login successful."})
 
@@ -58,3 +68,8 @@ def user(request):
             return Response({'user':serializer.data})
         else: 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def logout(request):
+    logout(request)
+    # return redirect('')
+    return Response({"message":"User successfully logged out"})

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'user',
     'review',
     'django_filters',
+    'django_extensions',
     'rest_framework.authtoken',
 ]
 
@@ -107,6 +108,9 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

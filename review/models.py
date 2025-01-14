@@ -22,4 +22,4 @@ class Review(models.Model):
     
 
     def __str__(self):
-        return "Review " + self.review_id
+        return "Review " + str(self.review_id)
