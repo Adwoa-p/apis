@@ -35,5 +35,6 @@ urlpatterns = [
     re_path('login/', views.login),
     re_path('test_token/', views.test_token),
     path('user/',views.user),
-     path('user/reviews/',review.views.user_reviews ), 
+    path('user/reviews/',review.views.user_reviews ), 
+    path('user/reviews/<int:id>',review.views.review_details), 
 ] + router.urls
