@@ -30,7 +30,7 @@ def user_reviews(request):
 def review_details(request, id):
         
     try:
-        review = Review.objects.first(pk=id)
+        review = Review.objects.get(pk=id)
     except Review.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
