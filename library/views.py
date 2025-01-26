@@ -62,6 +62,7 @@ def book_details(request,id):
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# allows retrieval of all books and addition of a particular book
 class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = Library_Serializer

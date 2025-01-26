@@ -33,6 +33,7 @@ urlpatterns = [
     path('books/', BookViewSet.as_view({'get': 'list'}), name='book_list'),
     re_path('signup/', views.signup),
     re_path('login/', views.login),
+    re_path('logout/', views.logout),
     re_path('test_token/', views.test_token),
     path('user/',views.user),
     path('user/reviews/',review.views.user_reviews ), 

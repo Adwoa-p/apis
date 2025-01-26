@@ -11,6 +11,7 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication # To authenticate sessions with a token
 from rest_framework.permissions import IsAuthenticated # to declare that an api only works if user is authenticated
 from django.shortcuts import redirect 
+from django.contrib.auth.hashers import make_password
 # from knox.models import AuthToken
 
 
@@ -26,7 +27,10 @@ def signup(request):
         return Response({"message": "User registration successful."})
     return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def login(request):
     username=request.data['username']
     password = request.data['password']
@@ -58,6 +62,7 @@ def test_token(request):
 def user(request):
     if request.method == 'GET':
         serializer = UserSerializer(request.user)
+        # token, created  = Token.objects.get_or_create(user=user)
         return Response({'user': serializer.data})
     
     elif request.method =='PUT':
@@ -69,7 +74,6 @@ def user(request):
         else: 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
 def logout(request):
-    logout(request)
-    # return redirect('')
     return Response({"message":"User successfully logged out"})
