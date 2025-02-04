@@ -20,19 +20,22 @@ from rest_framework.routers import DefaultRouter
 from django.urls import re_path, path, include
 import review.views
 from user import views
-
+from rest_framework.authtoken.views import obtain_auth_token
 
 router = DefaultRouter()
-router.register(r'books', BookViewSet, basename='books') 
+# router.register(r'books', BookViewSet, basename='books') 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     # path('', include(review.urls)),
-    path('books/<int:id>', book_details),
-    path('books/', BookViewSet.as_view({'get': 'list'}), name='book_list'),
+    path('books/', all_books),
+    path('books/add/', book_list),
+    path('books/<int:id>/', book),
+    path('books/update/<int:id>', book_updates),
+    # path('books/', BookViewSet.as_view({'get': 'list'}), name='book_list'),
     re_path('signup/', views.signup),
-    re_path('login/', views.login),
+    re_path('signin/', views.signin),
     re_path('logout/', views.logout),
     re_path('test_token/', views.test_token),
     path('user/',views.user),

@@ -11,7 +11,6 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication # To authenticate sessions with a token
 from rest_framework.permissions import IsAuthenticated # to declare that an api only works if user is authenticated
 from django.shortcuts import redirect 
-from django.contrib.auth.hashers import make_password
 # from knox.models import AuthToken
 
 
@@ -29,23 +28,13 @@ def signup(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def login(request):
-    username=request.data['username']
-    password = request.data['password']
-
-    print(f"Attempting to authenticate: username={username}, password={password}")
-
-    user = authenticate(username=username, password=password)
-
-    if user is None:
-        print("Authentication failed")
-        return Response({"detail":"Invalid Credentials"}, status = status.HTTP_401_UNAUTHORIZED)
-    
-    print(f"Authenticated user: {user.username}")
-    token, created  = Token.objects.get_or_create(user=user)
-    return Response({"token": token.key,"message": " User login successful."})
+def signin(request):
+    user = get_object_or_404(User, username=request.data['username'])
+    if not user.check_password(request.data['password']):
+        return Response({"detail": "Not Found"}, status=status.HTTP_404_NOT_FOUND)
+    token, _ = Token.objects.get_or_create(user=user)
+    serializer = UserSerializer(instance=user)
+    return Response({"token": token.key, "message": "User login successful."})
 
 
 # method to test authtokens to make sure they work for forbidden requests and to see if user is authenticated
