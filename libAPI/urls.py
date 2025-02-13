@@ -41,4 +41,7 @@ urlpatterns = [
     path('user/',views.user),
     path('user/reviews/',review.views.user_reviews ), 
     path('user/reviews/<int:id>',review.views.review_details), 
+    path('user/reviews/<int:id>/<str:visibility>/', review.views.update_visibility),
+    path('books/<int:id>/reviews/', review.views.book_reviews),
+    path('books/<int:book_id>/reviews/<int:review_id>/', review.views.book_review)
 ] + router.urls

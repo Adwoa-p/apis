@@ -13,7 +13,7 @@ class Review(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     book_id = models.ForeignKey('library.Book', on_delete=models.CASCADE)
     review_text = models.TextField(max_length=450)
-    visibilty = models.CharField(
+    visibility = models.CharField(
         max_length=7, 
         choices=PrivacyChoices.choices,
         default=PrivacyChoices.public
