@@ -4,7 +4,7 @@ User = get_user_model()
 
 
 class Book(models.Model):
-    book_id = models.AutoField(primary_key=True)
+    book_id = models.AutoField(primary_key=True )
     user_id = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     book_title = models.CharField(max_length=225)
     book_author = models.CharField(max_length=225)

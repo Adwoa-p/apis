@@ -5,10 +5,16 @@ from .manager import UserManager
 # Create your models here.
 
 class User(AbstractBaseUser):
+    class UserType(models.TextChoices):
+        admin = 'Admin'
+        user = 'User'
+        guest = 'Guest'
+
     email=models.EmailField(max_length=225, unique=True, verbose_name=_("Email Address"))
     first_name= models.CharField(max_length=100, verbose_name=_("First Name"))
     last_name= models.CharField(max_length=100, verbose_name=_("Last Name"))
     phone_number = models.CharField(max_length=60, unique=True)
+    user_type = models.CharField(max_length=7, choices=UserType.choices, default=UserType.user)
     
     user_id=models.AutoField(primary_key=True)
     username = models.CharField(max_length=60, unique=True) 

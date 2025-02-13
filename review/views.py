@@ -12,13 +12,15 @@ from rest_framework import status
 def user_reviews(request):
 
    if request.method == 'GET':
-      serializer = ReviewSerializer()
-      return Response({'review': serializer.data})
+      reviews = Review.objects.filter(user_id=request.user)
+      serializer = ReviewSerializer(reviews, many=True)
+      return Response({'reviews': serializer.data})
+   
    elif request.method == 'POST':
        serializer = ReviewSerializer(data=request.data)
        if serializer.is_valid():
            serializer.save()
-           return Response(serializer.data, status=status.HTTP_200_OK)
+           return Response(serializer.data, status=status.HTTP_201_CREATED)
        else:
            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
