@@ -32,7 +32,6 @@ def all_books(request):
     return Response(serializer.data, status = status.HTTP_200_OK)
 
 # add books to db
-
 @api_view(['POST']) # this decorator describes how the function should work
 @permission_classes([IsAdminUser])
 def book_list(request):
@@ -42,7 +41,6 @@ def book_list(request):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status = status.HTTP_201_CREATED)
-        # Return errors if the serializer data is invalid
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # get a particular book by id

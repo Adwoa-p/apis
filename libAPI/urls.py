@@ -39,8 +39,10 @@ urlpatterns = [
     re_path('logout/', views.logout),
     re_path('test_token/', views.test_token),
     path('user/',views.user),
-    path('user/reviews/',review.views.user_reviews ), 
-    path('user/reviews/<int:id>',review.views.review_details), 
+    path('user/reviews/',review.views.all_reviews ), 
+    path('user/reviews/<int:id>',review.views.review ), 
+    path('user/add_review/',review.views.add_review ), 
+    path('user/reviews/<int:id>/',review.views.review_details), 
     path('user/reviews/<int:id>/<str:visibility>/', review.views.update_visibility),
     path('books/<int:id>/reviews/', review.views.book_reviews),
     path('books/<int:book_id>/reviews/<int:review_id>/', review.views.book_review)
