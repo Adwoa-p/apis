@@ -12,6 +12,7 @@ class Book(models.Model):
     book_summary = models.TextField(max_length=325)
     book_content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
     
 
     def __str__(self):

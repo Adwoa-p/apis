@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import filters
+from django.core.paginator import Paginator
 from django_filters.rest_framework import DjangoFilterBackend
 from library.pagination import *
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -74,8 +75,8 @@ def book_updates(request,id):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        book.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        book.is_deleted = True
+        return Response({"message":"Book successfully deleted"},status=status.HTTP_204_NO_CONTENT)
 
 
 

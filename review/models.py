@@ -19,7 +19,14 @@ class Review(models.Model):
         default=PrivacyChoices.public
         )
     date_posted = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False) 
     
 
     def __str__(self):
         return "Review " + str(self.review_id)
+    
+    def save_review(self, *args, **kwargs):
+        if self.pk and Review.objects.get(pk=self.pk).visibility == "Private":
+            self.visibility = "Private"
+
+        super().save(*args, **kwargs)

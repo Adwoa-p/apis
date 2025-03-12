@@ -10,18 +10,23 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def all_reviews(request):
-    reviews = Review.objects.filter(user_id=request.user)
+    if request.user.user_type != 'User':
+        return Response({"message": "Not authorized to access this page"}, status=403)
+    reviews = Review.objects.filter(user_id=request.user,is_deleted=False)
     serializer = ReviewSerializer(reviews, many=True)
     return Response({'reviews': serializer.data})
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def review(request, id):
     try:
         review = Review.objects.get(pk=id)
     except Review.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
+    if request.user.user_id != review.user_id.user_id:
+        return Response ({"message": "Unauthorised user"}, status=403)
     username = review.user_id.username
     book = review.book_id.book_title
     serializer = ReviewSerializer(review)
@@ -31,7 +36,7 @@ def review(request, id):
 @permission_classes([IsAuthenticated])
 def add_review(request):
     if request.user.user_type != 'User':
-        return Response({"message": "Not authorized to access this page"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"message": "Not authorized to access this page"}, status=403)
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -47,11 +52,11 @@ def review_details(request, id):
     except Review.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.user.user_type != 'User':
-        return Response({"message": "Not authorized to access this page"}, status=status.HTTP_401_UNAUTHORIZED)
-    if request.user.user_id != review.user_id.user_id:
-        return Response({"message": "Unauthorised user"}, status=401)
     if request.method == 'PUT':
+        if request.user.user_type != 'User':
+            return Response({"message": "Not authorized to access this page"}, status=403)
+        if request.user.user_id != review.user_id.user_id:
+            return Response({"message": "Unauthorised user"}, status=403)
         serializer = ReviewSerializer(review, data = request.data)
         if serializer.is_valid():
             serializer.save()
@@ -60,21 +65,27 @@ def review_details(request, id):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     elif request.method == 'DELETE':
-        review.delete()
+        if request.user.user_type != 'Admin':
+            return Response({"message": "Not authorized to access this page"}, status=403)
+        review.visibility="Private"
+        review.is_deleted=True
+        review.save_review()
         return Response( {"message": "Review successfully deleted"}, status=status.HTTP_204_NO_CONTENT)
 
 @permission_classes([IsAuthenticated])
 @api_view(["PATCH"])  
 def update_visibility(request, id, visibility):
     if request.user.user_type != 'User':
-        return Response({"message": "Not authorized to access this page"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"message": "User is not authorized to access this page"}, status=403)
     review = Review.objects.get(pk=id)
     if request.user.user_id != review.user_id.user_id:
-        return Response({"message": "Unauthorised user"}, status=401)
-    review = Review.objects.get(pk=id)
+        return Response({"message": "Unauthorised user"}, status=403)
     visibility_choices = ['Public', 'Private']
     if visibility not in visibility_choices:
-        return Response({"detail": "Invalid visibility value."}, status=status.HTTP_400_BAD_REQUEST)      
+        return Response({"detail": "Invalid visibility value."}, status=status.HTTP_400_BAD_REQUEST) 
+    if review.is_deleted==True:
+        review.visibility = "Private"
+        return Response({"message": "Visibility can't be updated"}, status = 403)
     review.visibility = visibility
     review.save()
     return Response({"message": "Visibility successfully updated"}, status = status.HTTP_200_OK)
@@ -82,7 +93,7 @@ def update_visibility(request, id, visibility):
 
 @api_view(['GET'])
 def book_reviews(request,id):
-    reviews = Review.objects.filter(book_id=id)
+    reviews = Review.objects.filter(book_id=id,deleted=False)
 
     if not reviews.exists():
         return Response({'message': 'No reviews found for this book.'}, status=status.HTTP_404_NOT_FOUND)
@@ -99,5 +110,4 @@ def book_review(request,book_id, review_id):
         return Response({'message': 'No such review found for this book.'}, status=status.HTTP_404_NOT_FOUND)
 
     return Response({'review': review.review_text})
-    
     

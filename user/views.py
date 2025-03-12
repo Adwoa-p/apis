@@ -32,18 +32,10 @@ def signup(request):
 @api_view(['POST'])
 def signin(request):
     user = get_object_or_404(User, username=request.data['username'])
-
-    user.password = make_password(user.password)  # hashes the existing password
-    user.save()
-
-    if user is None:
-        return Response({"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
     if not user.check_password(request.data['password']):
-        return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-    
+        return Response({"details": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
     token, _ = Token.objects.get_or_create(user=user)
-    # serializer = UserSerializer(instance=user)
+    serializer = UserSerializer(instance=user)
     return Response({"token": token.key, "message": "User login successful."})
 
 
@@ -57,7 +49,7 @@ def test_token(request):
 
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
-# @authentication_classes([SessionAuthentication, TokenAuthentication])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
 def user(request):
     if request.user.user_type != 'User':
         return Response({"message": "Not authorized to access this page"}, status=status.HTTP_401_UNAUTHORIZED)

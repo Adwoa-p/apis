@@ -32,7 +32,7 @@ class User(AbstractBaseUser):
     objects= UserManager() 
 
     def __str__(self):
-        return str(self.user_id)
+        return self.email
     
     @property
     def get_full_name(self):
