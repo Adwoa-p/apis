@@ -12,9 +12,12 @@ User = get_user_model()
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def all_reviews(request):
-    if request.user.user_type != 'User':
+    if request.user.user_type == 'Guest':
         return Response({"message": "Not authorized to access this page"}, status=403)
-    reviews = Review.objects.filter(user_id=request.user,is_deleted=False)
+    if request.user.user_type == 'Admin':
+        reviews = Review.objects.all()
+    else:
+        reviews = Review.objects.filter(user_id=request.user,is_deleted=False)
     serializer = ReviewSerializer(reviews, many=True)
     return Response({'reviews': serializer.data})
 
@@ -65,12 +68,28 @@ def review_details(request, id):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     elif request.method == 'DELETE':
-        if request.user.user_type != 'Admin':
+        if request.user.user_type == 'Guest':
             return Response({"message": "Not authorized to access this page"}, status=403)
-        review.visibility="Private"
-        review.is_deleted=True
+        if request.user.user_type == 'Admin':
+            review.visibility="Private"
+        else:
+            review.is_deleted=True
         review.save_review()
         return Response( {"message": "Review successfully deleted"}, status=status.HTTP_204_NO_CONTENT)
+
+# # for user
+# @api_view(['DELETE'])
+# @permission_classes([IsAuthenticated])
+# def delete_review(request, id):
+#     try:
+#         review = Review.objects.get(pk=id)
+#     except Review.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+    
+#     if request.user.user_type != 'User':
+#             return Response({"message": "Not authorized to access this page"}, status=403)
+#     review.is_deleted = True
+    return Response({"message":"Review deleteed successfully"})
 
 @permission_classes([IsAuthenticated])
 @api_view(["PATCH"])  
@@ -93,21 +112,21 @@ def update_visibility(request, id, visibility):
 
 @api_view(['GET'])
 def book_reviews(request,id):
-    reviews = Review.objects.filter(book_id=id,deleted=False)
+    reviews = Review.objects.filter(book_id=id,is_deleted=False)
 
     if not reviews.exists():
         return Response({'message': 'No reviews found for this book.'}, status=status.HTTP_404_NOT_FOUND)
 
     for review in reviews:
-        return Response({'reviews': review.review_text})
+        return Response({'reviews': review.review_text}, status=200)
     
 
 @api_view(['GET'])
 def book_review(request,book_id, review_id):
     try:
-        review = Review.objects.get(book_id=book_id, review_id=review_id)
+        review = Review.objects.get(book_id=book_id, review_id=review_id, is_deleted=False)
     except Review.DoesNotExist:
         return Response({'message': 'No such review found for this book.'}, status=status.HTTP_404_NOT_FOUND)
 
-    return Response({'review': review.review_text})
+    return Response({'review': review.review_text}, status=200)
     
