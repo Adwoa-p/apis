@@ -14,8 +14,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAdminUser
-
-
+from rest_framework.pagination import *
+from .filters import BookFilter
 
 # we create our endpoints here. These are for accessing data
 '''
@@ -26,11 +26,27 @@ which can then be easily rendered into JSON, XML, or other content types for API
 '''
 
 # get all books from db
+class BookListPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = 'size'
+    max_page_size = 5
+
 @api_view(['GET']) 
 def all_books(request):
-    books = Book.objects.all()
+    books = Book.objects.all().order_by('book_title')
+    
+    # search filtering
+    search_filter = filters.SearchFilter()
+    books = search_filter.filter_queryset(request, books, view=None)
+
+    books = BookFilter(request.GET, queryset=books).qs
+
+    # pagination
+    paginator = BookListPagination()
+    result_page = paginator.paginate_queryset(books, request)
+
     serializer = Library_Serializer(books, many=True)
-    return Response(serializer.data, status = status.HTTP_200_OK)
+    return paginator.get_paginated_response(serializer.data)
 
 # add books to db
 @api_view(['POST']) # this decorator describes how the function should work
@@ -81,14 +97,6 @@ def book_updates(request,id):
 
 
 
-# allows retrieval of all books and addition of a particular book
-
-# class BookViewSet(ModelViewSet):
-#     queryset = Book.objects.all()
-#     serializer_class = Library_Serializer
-#     filter_backends = [filters.SearchFilter]
-#     pagination_class = BookListPagination
-#     search_fields = [ 'book_title', 'book_author', 'book_summary', 'genre']
 
 
 

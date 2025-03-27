@@ -19,6 +19,7 @@ class Review(models.Model):
         default=PrivacyChoices.public
         )
     date_posted = models.DateTimeField(auto_now_add=True)
+    # date_updated = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(default=False) 
     
 

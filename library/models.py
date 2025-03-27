@@ -11,7 +11,8 @@ class Book(models.Model):
     genre = models.CharField(max_length=50)
     book_summary = models.TextField(max_length=325)
     book_content = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    # updated_at = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(default=False)
     
 

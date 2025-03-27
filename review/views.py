@@ -89,7 +89,7 @@ def review_details(request, id):
 #     if request.user.user_type != 'User':
 #             return Response({"message": "Not authorized to access this page"}, status=403)
 #     review.is_deleted = True
-    return Response({"message":"Review deleteed successfully"})
+# return Response({"message":"Review deleteed successfully"})
 
 @permission_classes([IsAuthenticated])
 @api_view(["PATCH"])  
